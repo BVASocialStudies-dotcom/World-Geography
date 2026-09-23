@@ -1,1 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>World Geography</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style id="app-style">
+:root{
+  --paper:#F3F6F5;--surface:#FFFFFF;--ink:#16242B;--muted:#56666E;--line:#C9D5D6;--ocean:#1F5E7A;--focus:#1F5E7A;
+  --u1:#2E6F95;--u2:#3F9296;--u3:#5E9446;--u4:#A69A2E;--u5:#C0803A;--u6:#8E5B3C;
+  --display:"Barlow Condensed","Arial Narrow","Roboto Condensed",sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0F1B21;--surface:#15252D;--ink:#E4ECEC;--muted:#93A5AB;--line:#2A3C44;--ocean:#6FB2CF;--focus:#8CC8E0;
+  --u1:#5B9CC4;--u2:#5DB5B3;--u3:#80B864;--u4:#CFC05A;--u5:#DDA05C;--u6:#C08A68;color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --paper:#0F1B21;--surface:#15252D;--ink:#E4ECEC;--muted:#93A5AB;--line:#2A3C44;--ocean:#6FB2CF;--focus:#8CC8E0;
+  --u1:#5B9CC4;--u2:#5DB5B3;--u3:#80B864;--u4:#CFC05A;--u5:#DDA05C;--u6:#C08A68;color-scheme:dark;}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.6}
+img{max-width:100%}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
 
+/* Hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:center;gap:24px;padding:clamp(28px,6vw,72px) 0 clamp(20px,4vw,40px)}
+.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(3.4rem,11vw,7.5rem);line-height:.86;letter-spacing:-.01em;margin:0 0 18px}
+.hero h1 span{display:block}
+.hero p{margin:0;max-width:34ch;color:var(--muted);font-size:1.15rem}
+.globe{width:100%;max-width:340px;justify-self:end;color:var(--ocean)}
+.globe .g{fill:none;stroke:currentColor;stroke-width:1}
+.globe .rim{stroke-width:2}
+.globe .eq{stroke-width:1.6}
+.globe .trop{stroke-dasharray:3 4}
+
+/* Unit index */
+.index{display:flex;flex-wrap:wrap;gap:6px 22px;padding:14px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--line);margin-bottom:clamp(28px,5vw,48px)}
+.index a{font-family:var(--display);font-weight:600;font-size:1.1rem;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px;padding:4px 0}
+.index a:hover{text-decoration:underline;text-underline-offset:4px}
+.swatch{width:14px;height:14px;border-radius:3px;background:var(--c);flex:none}
+
+.editbar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:-24px 0 32px;color:var(--muted);font-size:.95rem}
+.editbar[hidden]{display:none}
+
+/* Units */
+.units{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,32px);padding-bottom:64px}
+.unit{background:var(--surface);border:1px solid var(--line);border-top:8px solid var(--c);border-radius:4px 4px 10px 10px;padding:22px clamp(18px,2.5vw,26px) 18px;scroll-margin-top:16px}
+.unit-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.unit-num{font-family:var(--display);font-weight:600;color:var(--c);font-size:1.05rem;margin:0}
+.unit h2{font-family:var(--display);font-weight:700;font-size:clamp(1.8rem,3.4vw,2.3rem);line-height:1;margin:4px 0 8px}
+.unit .blurb{font-style:italic;color:var(--muted);margin:0 0 16px;max-width:48ch}
+.spots{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.spot{display:flex;align-items:stretch;border-bottom:1px solid var(--line)}
+.spot-open{flex:1;min-width:0;display:flex;align-items:center;gap:14px;background:none;border:0;padding:11px 4px;text-align:left;cursor:pointer}
+.spot-open:hover .spot-title{text-decoration:underline;text-underline-offset:3px}
+.spot-open:disabled{cursor:default}
+.spot-open:disabled:hover .spot-title{text-decoration:none}
+.pin{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:1rem;border:2px solid var(--c);color:var(--c)}
+.filled .pin{background:var(--c);color:var(--surface)}
+.spot-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empty .spot-title{color:var(--muted);font-style:italic}
+.textbtn{background:none;border:0;padding:6px 8px;cursor:pointer;color:var(--ocean);font-family:var(--display);font-weight:600;font-size:1rem}
+.textbtn:hover{text-decoration:underline;text-underline-offset:3px}
+.btn{font-family:var(--display);font-weight:600;font-size:1.05rem;padding:8px 18px;border-radius:6px;border:2px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn:disabled{opacity:.55;cursor:progress}
+
+/* Dialogs */
+dialog{border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:0;width:min(980px,calc(100vw - 24px));max-height:calc(100dvh - 24px)}
+dialog::backdrop{background:rgba(10,20,26,.55)}
+.dlg{display:flex;flex-direction:column;max-height:calc(100dvh - 26px)}
+.dlg-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.dlg-head h3{font-family:var(--display);font-weight:700;font-size:1.5rem;margin:0;line-height:1.1}
+.dlg-head small{display:block;font-family:var(--body);font-weight:400;font-size:.9rem;color:var(--muted)}
+.dlg-body{padding:16px 18px;overflow:auto}
+.dlg-foot{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;align-items:center;padding:12px 18px;border-top:1px solid var(--line)}
+.dlg-foot .msg{margin-right:auto;color:var(--muted);font-size:.95rem}
+.dlg-foot .msg.err{color:#B3261E}
+.frame{display:block;width:100%;height:min(72dvh,760px);border:0;background:#fff}
+.viewer .dlg-body{padding:0}
+label{display:block;font-family:var(--display);font-weight:600;font-size:1.05rem;margin:0 0 6px}
+.field{margin-bottom:16px}
+input[type=text],textarea{width:100%;font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:9px 11px}
+textarea{font-family:var(--mono);font-size:.88rem;line-height:1.5;min-height:280px;resize:vertical;white-space:pre;overflow:auto}
+.hint{font-size:.9rem;color:var(--muted);margin:6px 0 0}
+.preview{border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-top:12px}
+.preview .frame{height:360px}
+
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr}
+  .globe{justify-self:start;max-width:180px;grid-row:1}
+  .units{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="application/json" id="state">{"units":[{"title":"The geographer's toolkit","blurb":"Maps, projections, latitude and longitude, and the five themes of geography.","slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"title":"Earth's physical systems","blurb":"Landforms, plate tectonics, climate zones and biomes.","slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"title":"People and places","blurb":"Population, migration, culture, and how people reshape the land.","slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"title":"The Americas","blurb":"From the Canadian Shield to Patagonia.","slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"title":"Europe and Africa","blurb":"Peninsulas and rift valleys, great rivers and the Sahel.","slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"title":"Asia and Oceania","blurb":"Monsoons, megacities, island arcs and the wide Pacific.","slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]}]}</script>
+<script id="app-script">
+(function(){
+  var HEAD = '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n<title>World Geography</title>\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">';
+  var SANDBOX = 'allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals';
+  var state;
+  try { state = JSON.parse(document.getElementById('state').textContent); } catch(e){ state = {units:[]}; }
+  var canEdit = false, artifactApi = null;
+
+  function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function isFilled(slot){ return !!(slot && slot.html && slot.html.trim()); }
+  function slotLabel(slot,i){ return slot.title && slot.title.trim() ? slot.title : (isFilled(slot) ? 'Spot '+(i+1) : 'Empty spot'); }
+
+  function globeSVG(){
+    var r=140, parts=[];
+    [0,35,70,105].forEach(function(rx){ parts.push(rx===0?'<line class="g" x1="0" y1="-140" x2="0" y2="140"/>':'<ellipse class="g" cx="0" cy="0" rx="'+rx+'" ry="140"/>'); });
+    [-105,-70,-35,35,70,105].forEach(function(y){ var w=Math.sqrt(r*r-y*y); var cls=(Math.abs(y)===35)?'g trop':'g'; parts.push('<line class="'+cls+'" x1="'+(-w).toFixed(1)+'" y1="'+y+'" x2="'+w.toFixed(1)+'" y2="'+y+'"/>'); });
+    parts.push('<line class="g eq" x1="-140" y1="0" x2="140" y2="0"/>');
+    parts.push('<circle class="g rim" cx="0" cy="0" r="140"/>');
+    return '<svg class="globe" viewBox="-160 -160 320 320" role="img" aria-label="A globe drawn with lines of latitude and longitude, tilted on its axis"><g transform="rotate(23.4)">'+parts.join('')+'<line class="g" x1="0" y1="-158" x2="0" y2="-140"/><line class="g" x1="0" y1="140" x2="0" y2="158"/></g></svg>';
+  }
+
+  function render(){
+    var root=document.getElementById('root');
+    var idx=state.units.map(function(u,i){ return '<a href="#unit-'+(i+1)+'" style="--c:var(--u'+(i+1)+')"><span class="swatch"></span>Unit '+(i+1)+'</a>'; }).join('');
+    var units=state.units.map(function(u,i){
+      var spots=u.slots.map(function(s,j){
+        var filled=isFilled(s);
+        return '<li class="spot '+(filled?'filled':'empty')+'">'+
+          '<button class="spot-open" data-u="'+i+'" data-s="'+j+'" '+(filled?'':'disabled')+' aria-label="'+esc(slotLabel(s,j))+(filled?', open':', nothing posted yet')+'">'+
+            '<span class="pin">'+(j+1)+'</span><span class="spot-title">'+esc(slotLabel(s,j))+'</span></button>'+
+          (canEdit?'<button class="textbtn spot-edit" data-u="'+i+'" data-s="'+j+'">'+(filled?'Edit':'Add')+'</button>':'')+
+        '</li>';
+      }).join('');
+      return '<section class="unit" id="unit-'+(i+1)+'" style="--c:var(--u'+(i+1)+')">'+
+        '<div class="unit-head"><p class="unit-num">Unit '+(i+1)+'</p>'+(canEdit?'<button class="textbtn unit-edit" data-u="'+i+'">Rename</button>':'')+'</div>'+
+        '<h2>'+esc(u.title)+'</h2><p class="blurb">'+esc(u.blurb)+'</p><ol class="spots">'+spots+'</ol></section>';
+    }).join('');
+    root.innerHTML=
+      '<div class="wrap">'+
+        '<header class="hero"><div><h1><span>World</span><span>Geography</span></h1><p>Six units, from reading a map to reading the world. Choose a unit to find its lessons, maps and activities.</p></div>'+globeSVG()+'</header>'+
+        '<nav class="index" aria-label="Units">'+idx+'</nav>'+
+        '<div class="editbar" '+(canEdit?'':'hidden')+'>You can edit this page. Use Add or Edit on any spot to paste raw HTML; saving updates the page for everyone.</div>'+
+        '<main class="units">'+units+'</main>'+
+      '</div>'+
+      '<dialog id="viewer" class="viewer" aria-labelledby="v-title"><div class="dlg"><div class="dlg-head"><h3 id="v-title"></h3><button class="btn ghost" data-close>Close</button></div><div class="dlg-body"><iframe class="frame" id="v-frame" title="Spot content"></iframe></div></div></dialog>'+
+      '<dialog id="editor" aria-labelledby="e-title"><form method="dialog" class="dlg" id="e-form"><div class="dlg-head"><h3 id="e-title"></h3><button type="button" class="btn ghost" data-close>Cancel</button></div>'+
+        '<div class="dlg-body" id="e-body"></div>'+
+        '<div class="dlg-foot"><span class="msg" id="e-msg" role="status"></span><button type="button" class="btn ghost" id="e-extra"></button><button type="submit" class="btn" id="e-save">Save</button></div></form></dialog>';
+  }
+
+  function openViewer(u,s){
+    var unit=state.units[u], slot=unit.slots[s];
+    var d=document.getElementById('viewer');
+    document.getElementById('v-title').innerHTML='<small>Unit '+(u+1)+': '+esc(unit.title)+'</small>'+esc(slotLabel(slot,s));
+    var f=document.getElementById('v-frame');
+    f.setAttribute('sandbox',SANDBOX);
+    f.srcdoc=slot.html;
+    d.showModal();
+  }
+
+  var editing=null;
+  function openSlotEditor(u,s){
+    var slot=state.units[u].slots[s];
+    editing={kind:'slot',u:u,s:s};
+    document.getElementById('e-title').innerHTML='<small>Unit '+(u+1)+': '+esc(state.units[u].title)+'</small>Spot '+(s+1);
+    document.getElementById('e-body').innerHTML=
+      '<div class="field"><label for="e-name">Title</label><input type="text" id="e-name" maxlength="120" placeholder="e.g. Reading a topographic map"></div>'+
+      '<div class="field"><label for="e-html">Raw HTML</label><textarea id="e-html" spellcheck="false" placeholder="Paste a full HTML page or a fragment. Scripts and styles run inside this spot only."></textarea>'+
+      '<p class="hint">Each spot runs in its own sandboxed frame, so its styles and scripts can’t affect the rest of the page.</p></div>'+
+      '<button type="button" class="textbtn" id="e-prev" style="padding-left:0">Show preview</button><div class="preview" id="e-pbox" hidden><iframe class="frame" id="e-pframe" title="Preview"></iframe></div>';
+    document.getElementById('e-name').value=slot.title||'';
+    document.getElementById('e-html').value=slot.html||'';
+    var extra=document.getElementById('e-extra');
+    extra.textContent='Clear spot'; extra.hidden=!isFilled(slot)&&!slot.title;
+    document.getElementById('e-prev').onclick=function(){
+      var box=document.getElementById('e-pbox'), pf=document.getElementById('e-pframe');
+      box.hidden=false; pf.setAttribute('sandbox',SANDBOX); pf.srcdoc=document.getElementById('e-html').value;
+      this.textContent='Refresh preview';
+    };
+    showEditor();
+  }
+  function openUnitEditor(u){
+    editing={kind:'unit',u:u};
+    document.getElementById('e-title').textContent='Rename unit '+(u+1);
+    document.getElementById('e-body').innerHTML=
+      '<div class="field"><label for="e-name">Unit title</label><input type="text" id="e-name" maxlength="80" required></div>'+
+      '<div class="field"><label for="e-blurb">Short description</label><input type="text" id="e-blurb" maxlength="160"></div>';
+    document.getElementById('e-name').value=state.units[u].title;
+    document.getElementById('e-blurb').value=state.units[u].blurb;
+    document.getElementById('e-extra').hidden=true;
+    showEditor();
+  }
+  function showEditor(){ setMsg(''); document.getElementById('e-save').disabled=false; document.getElementById('editor').showModal(); }
+  function setMsg(t,err){ var m=document.getElementById('e-msg'); m.textContent=t; m.className='msg'+(err?' err':''); }
+
+  function encodeState(s){ return JSON.stringify(s).replace(/</g,'\\u003c'); }
+  function pageSource(s){
+    var css=document.getElementById('app-style').textContent;
+    var js=document.getElementById('app-script').textContent;
+    var end='<'+'/script>';
+    return '<!doctype html>\n<html lang="en">\n<head>\n'+HEAD+'\n<style id="app-style">'+css+'</style>\n</head>\n<body>\n<div id="root"></div>\n'+
+      '<script type="application/json" id="state">'+encodeState(s)+end+'\n<script id="app-script">'+js+end+'\n</body>\n</html>\n';
+  }
+
+  function save(next){
+    if(!artifactApi){ setMsg('Saving isn’t available in this view.',true); return; }
+    var btn=document.getElementById('e-save'); btn.disabled=true; setMsg('Saving…');
+    artifactApi.publish(pageSource(next)).then(function(){ setMsg('Saved. Reloading…'); }).catch(function(err){
+      var code=err&&err.code;
+      if(code==='conflict'){ setMsg('Someone else just saved. Loading their version…'); return; }
+      if(code==='not_writer'||code==='not_granted'||code==='not_declared'||code==='consent_required'||code==='capability_disabled'){
+        setMsg('This view is read-only.',true); canEdit=false;
+        setTimeout(function(){ document.getElementById('editor').close(); render(); bind(); },1400); return; }
+      if(code==='too_large'){ setMsg('That’s too much content to save. Try shrinking embedded images.',true); btn.disabled=false; return; }
+      if(code==='rate_limited'){ setMsg('Saving too quickly. Wait a moment, then save again.',true); btn.disabled=false; return; }
+      setMsg('Couldn’t save. Check your connection and save again.',true); btn.disabled=false;
+    });
+  }
+
+  function bind(){
+    document.querySelectorAll('.spot-open').forEach(function(b){ b.onclick=function(){ openViewer(+b.dataset.u,+b.dataset.s); }; });
+    document.querySelectorAll('.spot-edit').forEach(function(b){ b.onclick=function(){ openSlotEditor(+b.dataset.u,+b.dataset.s); }; });
+    document.querySelectorAll('.unit-edit').forEach(function(b){ b.onclick=function(){ openUnitEditor(+b.dataset.u); }; });
+    document.querySelectorAll('[data-close]').forEach(function(b){ b.onclick=function(){ b.closest('dialog').close(); }; });
+    var viewer=document.getElementById('viewer');
+    viewer.addEventListener('close',function(){ document.getElementById('v-frame').srcdoc=''; });
+    document.getElementById('e-extra').onclick=function(){
+      if(!editing||editing.kind!=='slot') return;
+      if(!confirm('Clear this spot? Its title and HTML will be removed for everyone.')) return;
+      var next=JSON.parse(JSON.stringify(state)); next.units[editing.u].slots[editing.s]={title:'',html:''}; save(next);
+    };
+    document.getElementById('e-form').onsubmit=function(ev){
+      ev.preventDefault(); if(!editing) return;
+      var next=JSON.parse(JSON.stringify(state));
+      if(editing.kind==='slot'){
+        next.units[editing.u].slots[editing.s]={title:document.getElementById('e-name').value.trim(),html:document.getElementById('e-html').value};
+      } else {
+        var t=document.getElementById('e-name').value.trim(); if(!t){ setMsg('Give the unit a title.',true); return; }
+        next.units[editing.u].title=t; next.units[editing.u].blurb=document.getElementById('e-blurb').value.trim();
+      }
+      save(next);
+    };
+  }
+
+  render(); bind();
+
+  if(window.claude&&typeof window.claude.use==='function'){
+    Promise.all([window.claude.use('artifact'),window.claude.use('user')]).then(function(r){
+      artifactApi=r[0]; if(!artifactApi) return;
+      var user=r[1];
+      return (user?user.canEdit():Promise.resolve(true)).then(function(ok){ if(ok){ canEdit=true; render(); bind(); } });
+    }).catch(function(){});
+  }
+})();
+</script>
+</body>
+</html>
