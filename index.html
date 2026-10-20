@@ -59,6 +59,7 @@ button{font:inherit;color:inherit}
 .spots{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 .spot{display:flex;align-items:stretch;border-bottom:1px solid var(--line)}
 .spot-open{flex:1;min-width:0;display:flex;align-items:center;gap:14px;background:none;border:0;padding:11px 4px;text-align:left;cursor:pointer}
+a.spot-open{color:inherit;text-decoration:none}
 .spot-open:hover .spot-title{text-decoration:underline;text-underline-offset:3px}
 .spot-open:disabled{cursor:default}
 .spot-open:disabled:hover .spot-title{text-decoration:none}
@@ -102,7 +103,7 @@ textarea{font-family:var(--mono);font-size:.88rem;line-height:1.5;min-height:280
 </head>
 <body>
 <div id="root"></div>
-<script type="application/json" id="state">{"units":[{"slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]}]}</script>
+<script type="application/json" id="state">{"units":[{"slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"slots":[{"title":"Climate Zones","url":"Unit2A.html","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]},{"slots":[{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""},{"title":"","html":""}]}]}</script>
 <script id="app-script">
 (function(){
   var HEAD = '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n<title>World Geography</title>\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">';
@@ -115,7 +116,7 @@ textarea{font-family:var(--mono);font-size:.88rem;line-height:1.5;min-height:280
   var canEdit = /(^|[?&#])edit\b/.test(location.search + location.hash);
 
   function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
-  function isFilled(slot){ return !!(slot && slot.html && slot.html.trim()); }
+  function isFilled(slot){ return !!(slot && ((slot.html && slot.html.trim()) || (slot.url && slot.url.trim()))); }
   function slotLabel(slot,i){ return slot.title && slot.title.trim() ? slot.title : (isFilled(slot) ? 'Spot '+(i+1) : 'Empty spot'); }
 
   function globeSVG(){
@@ -134,8 +135,11 @@ textarea{font-family:var(--mono);font-size:.88rem;line-height:1.5;min-height:280
       var spots=u.slots.map(function(s,j){
         var filled=isFilled(s);
         return '<li class="spot '+(filled?'filled':'empty')+'">'+
-          '<button class="spot-open" data-u="'+i+'" data-s="'+j+'" '+(filled?'':'disabled')+' aria-label="'+esc(slotLabel(s,j))+(filled?', open':', nothing posted yet')+'">'+
-            '<span class="pin">'+(j+1)+'</span><span class="spot-title">'+esc(slotLabel(s,j))+'</span></button>'+
+          (s.url ?
+            '<a class="spot-open" href="'+esc(s.url)+'" target="_blank" rel="noopener" aria-label="'+esc(slotLabel(s,j))+', opens in a new tab">'+
+              '<span class="pin">'+(j+1)+'</span><span class="spot-title">'+esc(slotLabel(s,j))+'</span></a>' :
+            '<button class="spot-open" data-u="'+i+'" data-s="'+j+'" '+(filled?'':'disabled')+' aria-label="'+esc(slotLabel(s,j))+(filled?', open':', nothing posted yet')+'">'+
+              '<span class="pin">'+(j+1)+'</span><span class="spot-title">'+esc(slotLabel(s,j))+'</span></button>')+
           (canEdit?'<button class="textbtn spot-edit" data-u="'+i+'" data-s="'+j+'">'+(filled?'Edit':'Add')+'</button>':'')+
         '</li>';
       }).join('');
@@ -209,7 +213,7 @@ textarea{font-family:var(--mono);font-size:.88rem;line-height:1.5;min-height:280
   }
 
   function bind(){
-    document.querySelectorAll('.spot-open').forEach(function(b){ b.onclick=function(){ openViewer(+b.dataset.u,+b.dataset.s); }; });
+    document.querySelectorAll('button.spot-open').forEach(function(b){ b.onclick=function(){ openViewer(+b.dataset.u,+b.dataset.s); }; });
     document.querySelectorAll('.spot-edit').forEach(function(b){ b.onclick=function(){ openSlotEditor(+b.dataset.u,+b.dataset.s); }; });
     document.querySelectorAll('[data-close]').forEach(function(b){ b.onclick=function(){ b.closest('dialog').close(); }; });
     var dl=document.getElementById('dl');
@@ -235,7 +239,9 @@ textarea{font-family:var(--mono);font-size:.88rem;line-height:1.5;min-height:280
     document.getElementById('e-form').onsubmit=function(ev){
       ev.preventDefault(); if(!editing) return;
       var next=JSON.parse(JSON.stringify(state));
-        next.units[editing.u].slots[editing.s]={title:document.getElementById('e-name').value.trim(),html:document.getElementById('e-html').value};
+        var prev=state.units[editing.u].slots[editing.s], html=document.getElementById('e-html').value;
+        next.units[editing.u].slots[editing.s]={title:document.getElementById('e-name').value.trim(),html:html};
+        if(prev.url && !html.trim()) next.units[editing.u].slots[editing.s].url=prev.url;
       save(next);
     };
   }
