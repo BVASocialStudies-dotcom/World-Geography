@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>World Religions: Drag and Drop Chart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+  --paper: #F5EEEE;
+  --surface: #FFFFFF;
+  --ink: #241517;
+  --muted: #6B5658;
+  --line: #D9C3C5;
+  --rule: #F3DCDE;
+  --ok: #1E7A46; --ok-bg: #E1F3E8;
+  --bad: #B42318; --bad-bg: #FBE4E1;
+  --accent: #A3121F; --accent-soft: #F8E1E3; --on-accent: #FFFFFF;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --paper: #1A1213; --surface: #261A1C; --ink: #F2E8E8; --muted: #B79FA2;
+    --line: #4A3236; --rule: #36252A;
+    --ok: #72D69D; --ok-bg: #173323; --bad: #FF8F85; --bad-bg: #3B1C1A;
+    --accent: #F28B8B; --accent-soft: #3D1E22; --on-accent: #1A0D0E;
+  }
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { height: 100%; }
+body {
+  margin: 0; min-height: 100%;
+  background: var(--paper); color: var(--ink);
+  font: 400 16px/1.5 "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+}
+h1, h2 { font-family: "Bricolage Grotesque", "Arial Rounded MT Bold", system-ui, sans-serif; line-height: 1.05; margin: 0; }
+button { font: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.wrap { max-width: 1280px; margin: 0 auto; padding: 24px 20px 48px; }
+
+/* Page backgrounds: religious symbols and houses of worship */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-color: var(--accent); opacity: .1;
+  -webkit-mask-repeat: repeat; mask-repeat: repeat;
+  -webkit-mask-size: 460px 280px; mask-size: 460px 280px;
+}
+body[data-page="abrahamic"]::before { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='460' height='280' viewBox='0 0 460 280'%3E%3Cg transform='translate%2820,20%29 rotate%28-8 30 30%29'%3E%3Cg fill='none' stroke='black' stroke-width='4.5' stroke-linejoin='round'%3E%3Cpolygon points='30.0,6.0 51.7,43.5 8.3,43.5'/%3E%3Cpolygon points='30.0,56.0 8.3,18.5 51.7,18.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate%28170,45%29 rotate%286 30 30%29'%3E%3Cpath fill-rule='evenodd' d='M2 58V36L14 26L22 33V20L30 9L38 20V58ZM26 58V48A4 4 0 0 1 34 48V58ZM27 26h6v8h-6z'/%3E%3Cpath d='M28.6 0h2.8v4h3.6v2.6h-3.6v4h-2.8v-4H25V4h3.6z'/%3E%3C/g%3E%3Cg transform='translate%28320,15%29 rotate%28-4 30 30%29'%3E%3Cpath d='M47.8 42.0A24 24 0 1 1 33.2 9.1A19 19 0 1 0 47.8 42.0Z'/%3E%3Cpolygon points='46.0,14.0 48.0,19.3 53.6,19.5 49.2,23.0 50.7,28.5 46.0,25.4 41.3,28.5 42.8,23.0 38.4,19.5 44.0,19.3'/%3E%3C/g%3E%3Cg transform='translate%2895,170%29 rotate%285 30 30%29'%3E%3Cpath fill-rule='evenodd' d='M8 58V30L30 16L52 30V58ZM24 58V46A6 6 0 0 1 36 46V58ZM14 36h7v8h-7zM39 36h7v8h-7z'/%3E%3Cg fill='none' stroke='black' stroke-width='2.2' stroke-linejoin='round'%3E%3Cpolygon points='30.0,0.0 36.1,10.5 23.9,10.5'/%3E%3Cpolygon points='30.0,14.0 23.9,3.5 36.1,3.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate%28245,185%29 rotate%28-6 30 30%29'%3E%3Cpath d='M26 2h8v15h13v8H34v33h-8V25H13v-8h13z'/%3E%3C/g%3E%3Cg transform='translate%28390,160%29 rotate%288 30 30%29'%3E%3Cpath fill-rule='evenodd' d='M6 58V38H10Q10 22 28 14Q46 22 46 38H50V58ZM22 58V48A6 6 0 0 1 34 48V58Z'/%3E%3Cpath d='M52 58V22L55 12L58 22V58Z'/%3E%3Cpath d='M31.6 9.8A4 4 0 1 1 28.7 4.1A3.2 3.2 0 1 0 31.6 9.8Z'/%3E%3Crect x='27.3' y='10' width='1.4' height='5'/%3E%3C/g%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='460' height='280' viewBox='0 0 460 280'%3E%3Cg transform='translate%2820,20%29 rotate%28-8 30 30%29'%3E%3Cg fill='none' stroke='black' stroke-width='4.5' stroke-linejoin='round'%3E%3Cpolygon points='30.0,6.0 51.7,43.5 8.3,43.5'/%3E%3Cpolygon points='30.0,56.0 8.3,18.5 51.7,18.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate%28170,45%29 rotate%286 30 30%29'%3E%3Cpath fill-rule='evenodd' d='M2 58V36L14 26L22 33V20L30 9L38 20V58ZM26 58V48A4 4 0 0 1 34 48V58ZM27 26h6v8h-6z'/%3E%3Cpath d='M28.6 0h2.8v4h3.6v2.6h-3.6v4h-2.8v-4H25V4h3.6z'/%3E%3C/g%3E%3Cg transform='translate%28320,15%29 rotate%28-4 30 30%29'%3E%3Cpath d='M47.8 42.0A24 24 0 1 1 33.2 9.1A19 19 0 1 0 47.8 42.0Z'/%3E%3Cpolygon points='46.0,14.0 48.0,19.3 53.6,19.5 49.2,23.0 50.7,28.5 46.0,25.4 41.3,28.5 42.8,23.0 38.4,19.5 44.0,19.3'/%3E%3C/g%3E%3Cg transform='translate%2895,170%29 rotate%285 30 30%29'%3E%3Cpath fill-rule='evenodd' d='M8 58V30L30 16L52 30V58ZM24 58V46A6 6 0 0 1 36 46V58ZM14 36h7v8h-7zM39 36h7v8h-7z'/%3E%3Cg fill='none' stroke='black' stroke-width='2.2' stroke-linejoin='round'%3E%3Cpolygon points='30.0,0.0 36.1,10.5 23.9,10.5'/%3E%3Cpolygon points='30.0,14.0 23.9,3.5 36.1,3.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate%28245,185%29 rotate%28-6 30 30%29'%3E%3Cpath d='M26 2h8v15h13v8H34v33h-8V25H13v-8h13z'/%3E%3C/g%3E%3Cg transform='translate%28390,160%29 rotate%288 30 30%29'%3E%3Cpath fill-rule='evenodd' d='M6 58V38H10Q10 22 28 14Q46 22 46 38H50V58ZM22 58V48A6 6 0 0 1 34 48V58Z'/%3E%3Cpath d='M52 58V22L55 12L58 22V58Z'/%3E%3Cpath d='M31.6 9.8A4 4 0 1 1 28.7 4.1A3.2 3.2 0 1 0 31.6 9.8Z'/%3E%3Crect x='27.3' y='10' width='1.4' height='5'/%3E%3C/g%3E%3C/svg%3E"); }
+body[data-page="dharmic"]::before { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='460' height='280' viewBox='0 0 460 280'%3E%3Cg transform='translate%2820,20%29 rotate%28-8 30 30%29'%3E%3Cg fill='none' stroke='black' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 17C14 10 26 11 25 20C24 27 17 29 13 29C22 28 30 33 29 43C28 53 16 56 8 50'/%3E%3Cpath d='M25 29C33 25 46 25 47 38C48 48 40 54 34 50'/%3E%3Cpath d='M36 13C40 18 48 18 52 13'/%3E%3C/g%3E%3Ccircle cx='44' cy='6' r='3'/%3E%3C/g%3E%3Cg transform='translate%28170,45%29 rotate%286 30 30%29'%3E%3Cpath fill-rule='evenodd' d='M4 58V34H48V58ZM20 58V48A6 6 0 0 1 32 48V58Z'/%3E%3Cpath d='M14 34Q14 20 26 14Q38 20 38 34Z'/%3E%3Crect x='25' y='6' width='2' height='9'/%3E%3Cpath d='M5 34Q5 27 10 25Q15 27 15 34Z'/%3E%3Cpath d='M37 34Q37 27 42 25Q47 27 47 34Z'/%3E%3Crect x='53' y='4' width='2' height='54'/%3E%3Cpath d='M55 5L60 12L55 19Z'/%3E%3C/g%3E%3Cg transform='translate%28320,15%29 rotate%28-4 30 30%29'%3E%3Cg fill='none' stroke='black' stroke-width='3'%3E%3Ccircle cx='30' cy='30' r='21'/%3E%3Cline x1='35.0' y1='30.0' x2='51.0' y2='30.0'/%3E%3Cline x1='33.5' y1='33.5' x2='44.8' y2='44.8'/%3E%3Cline x1='30.0' y1='35.0' x2='30.0' y2='51.0'/%3E%3Cline x1='26.5' y1='33.5' x2='15.2' y2='44.8'/%3E%3Cline x1='25.0' y1='30.0' x2='9.0' y2='30.0'/%3E%3Cline x1='26.5' y1='26.5' x2='15.2' y2='15.2'/%3E%3Cline x1='30.0' y1='25.0' x2='30.0' y2='9.0'/%3E%3Cline x1='33.5' y1='26.5' x2='44.8' y2='15.2'/%3E%3C/g%3E%3Ccircle cx='30' cy='30' r='5'/%3E%3Ccircle cx='57.0' cy='30.0' r='2.6'/%3E%3Ccircle cx='49.1' cy='49.1' r='2.6'/%3E%3Ccircle cx='30.0' cy='57.0' r='2.6'/%3E%3Ccircle cx='10.9' cy='49.1' r='2.6'/%3E%3Ccircle cx='3.0' cy='30.0' r='2.6'/%3E%3Ccircle cx='10.9' cy='10.9' r='2.6'/%3E%3Ccircle cx='30.0' cy='3.0' r='2.6'/%3E%3Ccircle cx='49.1' cy='10.9' r='2.6'/%3E%3C/g%3E%3Cg transform='translate%2895,170%29 rotate%285 30 30%29'%3E%3Cpath fill-rule='evenodd' d='M4 58V50H12V40Q14 22 30 8Q46 22 48 40V50H56V58ZM25 58V48A5 5 0 0 1 35 48V58Z'/%3E%3Crect x='29' y='0' width='2' height='9'/%3E%3Cpath d='M31 0L39 3L31 6Z'/%3E%3C/g%3E%3Cg transform='translate%28245,185%29 rotate%28-6 30 30%29'%3E%3Cpath d='M30 2L34 10V44H26V10Z'/%3E%3Crect x='23' y='42' width='14' height='3'/%3E%3Crect x='28' y='45' width='4' height='8'/%3E%3Ccircle cx='30' cy='30' r='13' fill='none' stroke='black' stroke-width='4'/%3E%3Cg fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round'%3E%3Cpath d='M22 56C8 50 4 36 10 22'/%3E%3Cpath d='M38 56C52 50 56 36 50 22'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate%28390,160%29 rotate%288 30 30%29'%3E%3Crect x='6' y='52' width='48' height='6'/%3E%3Cpath d='M12 52A18 18 0 0 1 48 52Z'/%3E%3Crect x='25' y='28' width='10' height='7'/%3E%3Crect x='23' y='24' width='14' height='3'/%3E%3Crect x='25' y='19' width='10' height='3'/%3E%3Crect x='27' y='14' width='6' height='3'/%3E%3Cpath d='M28 13L30 2L32 13Z'/%3E%3C/g%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='460' height='280' viewBox='0 0 460 280'%3E%3Cg transform='translate%2820,20%29 rotate%28-8 30 30%29'%3E%3Cg fill='none' stroke='black' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 17C14 10 26 11 25 20C24 27 17 29 13 29C22 28 30 33 29 43C28 53 16 56 8 50'/%3E%3Cpath d='M25 29C33 25 46 25 47 38C48 48 40 54 34 50'/%3E%3Cpath d='M36 13C40 18 48 18 52 13'/%3E%3C/g%3E%3Ccircle cx='44' cy='6' r='3'/%3E%3C/g%3E%3Cg transform='translate%28170,45%29 rotate%286 30 30%29'%3E%3Cpath fill-rule='evenodd' d='M4 58V34H48V58ZM20 58V48A6 6 0 0 1 32 48V58Z'/%3E%3Cpath d='M14 34Q14 20 26 14Q38 20 38 34Z'/%3E%3Crect x='25' y='6' width='2' height='9'/%3E%3Cpath d='M5 34Q5 27 10 25Q15 27 15 34Z'/%3E%3Cpath d='M37 34Q37 27 42 25Q47 27 47 34Z'/%3E%3Crect x='53' y='4' width='2' height='54'/%3E%3Cpath d='M55 5L60 12L55 19Z'/%3E%3C/g%3E%3Cg transform='translate%28320,15%29 rotate%28-4 30 30%29'%3E%3Cg fill='none' stroke='black' stroke-width='3'%3E%3Ccircle cx='30' cy='30' r='21'/%3E%3Cline x1='35.0' y1='30.0' x2='51.0' y2='30.0'/%3E%3Cline x1='33.5' y1='33.5' x2='44.8' y2='44.8'/%3E%3Cline x1='30.0' y1='35.0' x2='30.0' y2='51.0'/%3E%3Cline x1='26.5' y1='33.5' x2='15.2' y2='44.8'/%3E%3Cline x1='25.0' y1='30.0' x2='9.0' y2='30.0'/%3E%3Cline x1='26.5' y1='26.5' x2='15.2' y2='15.2'/%3E%3Cline x1='30.0' y1='25.0' x2='30.0' y2='9.0'/%3E%3Cline x1='33.5' y1='26.5' x2='44.8' y2='15.2'/%3E%3C/g%3E%3Ccircle cx='30' cy='30' r='5'/%3E%3Ccircle cx='57.0' cy='30.0' r='2.6'/%3E%3Ccircle cx='49.1' cy='49.1' r='2.6'/%3E%3Ccircle cx='30.0' cy='57.0' r='2.6'/%3E%3Ccircle cx='10.9' cy='49.1' r='2.6'/%3E%3Ccircle cx='3.0' cy='30.0' r='2.6'/%3E%3Ccircle cx='10.9' cy='10.9' r='2.6'/%3E%3Ccircle cx='30.0' cy='3.0' r='2.6'/%3E%3Ccircle cx='49.1' cy='10.9' r='2.6'/%3E%3C/g%3E%3Cg transform='translate%2895,170%29 rotate%285 30 30%29'%3E%3Cpath fill-rule='evenodd' d='M4 58V50H12V40Q14 22 30 8Q46 22 48 40V50H56V58ZM25 58V48A5 5 0 0 1 35 48V58Z'/%3E%3Crect x='29' y='0' width='2' height='9'/%3E%3Cpath d='M31 0L39 3L31 6Z'/%3E%3C/g%3E%3Cg transform='translate%28245,185%29 rotate%28-6 30 30%29'%3E%3Cpath d='M30 2L34 10V44H26V10Z'/%3E%3Crect x='23' y='42' width='14' height='3'/%3E%3Crect x='28' y='45' width='4' height='8'/%3E%3Ccircle cx='30' cy='30' r='13' fill='none' stroke='black' stroke-width='4'/%3E%3Cg fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round'%3E%3Cpath d='M22 56C8 50 4 36 10 22'/%3E%3Cpath d='M38 56C52 50 56 36 50 22'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate%28390,160%29 rotate%288 30 30%29'%3E%3Crect x='6' y='52' width='48' height='6'/%3E%3Cpath d='M12 52A18 18 0 0 1 48 52Z'/%3E%3Crect x='25' y='28' width='10' height='7'/%3E%3Crect x='23' y='24' width='14' height='3'/%3E%3Crect x='25' y='19' width='10' height='3'/%3E%3Crect x='27' y='14' width='6' height='3'/%3E%3Cpath d='M28 13L30 2L32 13Z'/%3E%3C/g%3E%3C/svg%3E"); }
+body[data-page="results"]::before { display: none; }
+
+/* Start + results screens */
+.panel { max-width: 640px; margin: 6vh auto 0; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 32px; }
+.panel h1 { font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 800; letter-spacing: -0.02em; }
+.panel p { color: var(--muted); max-width: 60ch; }
+.panel ol { padding-left: 1.2em; margin: 0 0 20px; }
+.panel li { margin-bottom: 6px; }
+label { display: block; font-weight: 700; margin: 20px 0 6px; }
+input[type="text"] { width: 100%; font: inherit; padding: 12px 14px; border-radius: 10px; border: 2px solid var(--line); background: var(--paper); color: var(--ink); }
+input[type="text"]:focus { border-color: var(--accent); outline: none; }
+
+.btn { border: 0; border-radius: 10px; padding: 12px 18px; font-weight: 700; background: var(--accent); color: var(--on-accent); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn.quiet { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
+.btn.link { background: none; color: var(--muted); padding: 6px 0; text-decoration: underline; font-weight: 400; }
+.row-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+
+/* Game header */
+.top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.part { margin: 0 0 6px; color: var(--muted); font-weight: 700; }
+.top h1 { font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 800; letter-spacing: -0.03em; color: var(--accent); }
+.student { color: var(--muted); margin: 0; max-width: 40ch; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+
+/* Board */
+.board-wrap { overflow-x: auto; border-radius: 14px; }
+.board { display: grid; grid-template-columns: 150px repeat(3, minmax(180px, 1fr)); gap: 8px; min-width: 720px; }
+.rel-head { background: var(--accent); color: var(--on-accent); border-radius: 10px; padding: 12px; text-align: center; font: 800 1.25rem/1.1 "Bricolage Grotesque", system-ui, sans-serif; }
+.cat { display: flex; align-items: center; padding: 8px 10px 8px 4px; font-weight: 700; font-size: .95rem; }
+.cell {
+  position: relative; min-height: 104px; border-radius: 10px;
+  border: 2px dashed var(--line); background: color-mix(in srgb, var(--surface) 82%, transparent);
+  padding: 6px; display: flex; transition: border-color .12s, background .12s;
+}
+.cell.has-card { border-style: solid; border-color: transparent; background: transparent; padding: 0; }
+.board.picking .cell:not(.locked) { border-color: var(--accent); }
+.cell.over { border: 2px solid var(--accent); background: var(--accent-soft); }
+.cell.correct .card { background: var(--ok-bg); border-color: var(--ok); }
+.cell.wrong .card { background: var(--bad-bg); border-color: var(--bad); }
+.mark { position: absolute; top: 4px; right: 6px; font-weight: 700; font-size: 1rem; }
+.cell.correct .mark { color: var(--ok); }
+.cell.wrong .mark { color: var(--bad); }
+
+/* Cards */
+.card {
+  position: relative; width: 100%;
+  background: var(--surface); color: var(--ink);
+  border: 1.5px solid var(--line); border-radius: 8px;
+  padding: 10px 26px 10px 12px; font-size: .92rem; line-height: 1.35;
+  touch-action: none; user-select: none; -webkit-user-select: none;
+  cursor: grab;
+}
+.card.locked { cursor: default; }
+.card.selected { outline: 3px solid var(--accent); outline-offset: 2px; }
+.card.lifted { opacity: .3; }
+.return {
+  position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; border-radius: 6px;
+  border: 0; background: transparent; color: var(--muted); font-size: 1.1rem; line-height: 1;
+}
+.return:hover { background: var(--paper); color: var(--ink); }
+.ghost {
+  position: fixed; top: 0; left: 0; z-index: 50; pointer-events: none;
+  box-shadow: 0 14px 30px rgba(0,0,0,.25); transform-origin: center;
+  cursor: grabbing;
+}
+
+/* Dock: the stack of index cards */
+.dock { position: sticky; top: calc(16px + env(safe-area-inset-top, 0px)); background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+.dock h2 { font-size: 1.35rem; font-weight: 800; margin-bottom: 4px; }
+.count { color: var(--muted); margin: 0 0 14px; }
+.stack { position: relative; margin: 6px 4px 18px; }
+.stack::before, .stack::after {
+  content: ""; position: absolute; inset: 0; border-radius: 10px;
+  background: var(--surface); border: 1.5px solid var(--line);
+}
+.stack::before { transform: rotate(3deg) translate(6px, 6px); }
+.stack::after { transform: rotate(-2deg) translate(-4px, 4px); }
+.stack.one::before, .stack.one::after { display: none; }
+.stack.two::before { display: none; }
+.stack .card {
+  z-index: 1; min-height: 150px; font-size: 1.08rem; padding: 34px 16px 16px;
+  border-radius: 10px; border-color: var(--accent);
+  background-image: repeating-linear-gradient(to bottom, transparent 0 27px, var(--rule) 27px 28px);
+  background-position: 0 30px;
+  box-shadow: 0 2px 0 var(--line);
+}
+.stack .card::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 22px; height: 2px; background: var(--accent); opacity: .55;
+}
+.pop { animation: pop .35s cubic-bezier(.2,.9,.3,1.2); }
+@keyframes pop { from { transform: translateY(24px) rotate(-4deg) scale(.9); opacity: 0; } to { transform: none; opacity: 1; } }
+.hint { color: var(--muted); font-size: .9rem; margin: 0 0 12px; }
+.dock .btn { width: 100%; margin-top: 8px; }
+.score { font: 800 2.4rem/1 "Bricolage Grotesque", system-ui, sans-serif; color: var(--accent); margin: 6px 0; }
+.note { color: var(--muted); margin: 6px 0; }
+.foot { margin-top: 28px; text-align: right; }
+
+/* Results */
+.results-table { width: 100%; border-collapse: collapse; margin-top: 18px; }
+.results-table th, .results-table td { text-align: left; padding: 10px 6px; border-bottom: 1px solid var(--line); }
+.results-table td.num { font-weight: 700; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .dock { order: -1; top: env(safe-area-inset-top, 0px); z-index: 10; padding: 12px; border-radius: 0 0 14px 14px; margin: 0 -20px; }
+  .dock h2 { font-size: 1.1rem; }
+  .stack { margin: 4px 4px 10px; }
+  .stack .card { min-height: 84px; font-size: 1rem; padding: 26px 12px 10px; }
+  .stack .card::before { top: 16px; }
+  .count { margin-bottom: 6px; }
+  .hint { display: none; }
+  .dock-actions { display: flex; gap: 8px; }
+  .dock-actions .btn { margin-top: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .pop { animation: none; } * { transition: none !important; } }
+@media print {
+  .btn, .foot, body::before { display: none !important; }
+  body { background: #fff; color: #000; }
+  .panel { border: 0; margin: 0; }
+}
+</style>
+</head>
+<body data-page="abrahamic">
+<main class="wrap" id="app"></main>
+
+<script>
+const CATS = [
+  ['god', 'Name of god(s)'],
+  ['founder', 'Founder(s)'],
+  ['book', 'Holy book(s)'],
+  ['beliefs', 'Key beliefs & practices'],
+  ['holidays', 'Major holidays'],
+  ['worship', 'Place of worship']
+];
+
+const PAGES = [
+  {
+    id: 'abrahamic',
+    title: 'Abrahamic religions',
+    intro: 'Judaism, Christianity, and Islam all trace their roots to Abraham and worship one God.',
+    religions: ['Judaism', 'Christianity', 'Islam'],
+    answers: {
+      god: ['Yahweh, the one God', 'One God as the Holy Trinity: Father, Son, and Holy Spirit', 'Allah, the one God'],
+      founder: ['Abraham, with Moses as the great lawgiver', 'Jesus of Nazareth, whose teachings were spread by his apostles', 'Muhammad, the final prophet'],
+      book: ['Torah, Tanakh, and Talmud', 'The Bible: Old Testament and New Testament', 'Qur’an and the Hadith'],
+      beliefs: ['Keep the covenant with God, follow the Ten Commandments and religious law, and rest on the Sabbath (Shabbat)', 'God’s Son died and rose again to save people; salvation through faith; baptism and communion', 'Follow the Five Pillars: faith, daily prayer, charity, fasting, and pilgrimage to Mecca'],
+      holidays: ['Passover, Rosh Hashanah, Yom Kippur, and Hanukkah', 'Christmas, Easter, and Lent', 'Ramadan, Eid al-Fitr, and Eid al-Adha'],
+      worship: ['Synagogue', 'Church', 'Mosque']
+    }
+  },
+  {
+    id: 'dharmic',
+    title: 'Dharmic religions',
+    intro: 'Hinduism, Buddhism, and Sikhism began in South Asia and share ideas like dharma and karma.',
+    religions: ['Hinduism', 'Buddhism', 'Sikhism'],
+    answers: {
+      god: ['Brahman, the supreme spirit, worshipped through many gods such as Vishnu and Shiva', 'No creator god; the founder is honored as a teacher, not a god', 'Waheguru, one God (Ik Onkar)'],
+      founder: ['No single founder; grew from ancient traditions in India over thousands of years', 'Siddhartha Gautama, the “Enlightened One”', 'Guru Nanak, followed by nine other Gurus'],
+      book: ['Vedas, Upanishads, and the Bhagavad Gita', 'Tripitaka (Pali Canon) and the sutras', 'Guru Granth Sahib'],
+      beliefs: ['Dharma (duty), karma, reincarnation, and the goal of moksha', 'Four Noble Truths and the Eightfold Path; meditation; the goal of nirvana', 'Equality of all people, honest work, sharing with others, and remembering God; the Five Ks'],
+      holidays: ['Diwali and Holi', 'Vesak, celebrating the founder’s birth, enlightenment, and death', 'Vaisakhi and Gurpurabs'],
+      worship: ['Mandir (temple) or a home shrine', 'Temple or monastery; stupas', 'Gurdwara, which includes a free community kitchen (langar)']
+    }
+  }
+];
+
+const TOTAL = CATS.length * 3;
+const SAVE_KEY = 'world-religions-dnd-v1';
+const app = document.getElementById('app');
+
+let state, selected = null, lastDockId = null, drag = null;
+
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function newPage() {
+  const deck = [];
+  CATS.forEach(([c]) => [0, 1, 2].forEach(r => deck.push(c + '|' + r)));
+  return { deck: shuffle(deck), placed: {}, locked: {}, wrong: [], firstScore: null, checks: 0, status: 'placing' };
+}
+function freshState() { return { screen: 'game', pageIdx: 0, pages: [newPage(), newPage()], finishedAt: null }; }
+function save() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch (e) {} }
+function load() {
+  try { const s = JSON.parse(localStorage.getItem(SAVE_KEY)); if (s && s.pages && s.pages.length === 2) { if (s.screen === 'start') s.screen = 'game'; return s; } } catch (e) {}
+  return freshState();
+}
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function page() { return state.pages[state.pageIdx]; }
+function def() { return PAGES[state.pageIdx]; }
+function cardText(id) { const [c, r] = id.split('|'); return def().answers[c][+r]; }
+function findCell(p, id) { return Object.keys(p.placed).find(k => p.placed[k] === id) || null; }
+
+/* ---------- Rendering ---------- */
+function render() {
+  document.body.dataset.page = state.screen === 'game' ? def().id : 'results';
+  if (state.screen === 'results') renderResults();
+  else renderGame();
+  save();
+}
+
+function cardHTML(id, opts = {}) {
+  const cls = ['card'];
+  if (opts.locked) cls.push('locked');
+  if (selected === id) cls.push('selected');
+  if (opts.pop) cls.push('pop');
+  const ret = opts.returnable ? `<button class="return" data-action="return" data-card="${id}" aria-label="Send this card back to the stack">×</button>` : '';
+  return `<div class="${cls.join(' ')}" data-card="${id}" ${opts.locked ? '' : 'tabindex="0" role="button"'} aria-label="${esc(cardText(id))}">${esc(cardText(id))}${ret}</div>`;
+}
+
+function renderGame() {
+  const p = page(), d = def();
+  const editable = p.status === 'placing';
+  let board = `<div></div>` + d.religions.map(r => `<div class="rel-head">${r}</div>`).join('');
+  CATS.forEach(([c, label]) => {
+    board += `<div class="cat">${label}</div>`;
+    [0, 1, 2].forEach(r => {
+      const key = c + '|' + r;
+      const id = p.placed[key];
+      const cls = ['cell'];
+      let mark = '';
+      if (id) cls.push('has-card');
+      if (p.locked[key]) { cls.push('correct', 'locked'); mark = '<span class="mark" aria-label="Correct">✓</span>'; }
+      else if (p.wrong.includes(key)) { cls.push('wrong'); mark = '<span class="mark" aria-label="Incorrect">✗</span>'; }
+      const inner = id ? cardHTML(id, { locked: !editable || p.locked[key], returnable: editable && !p.locked[key] }) : '';
+      board += `<div class="${cls.join(' ')}" data-cell="${key}" ${editable && !p.locked[key] ? 'tabindex="0" role="button"' : ''} aria-label="${label}, ${d.religions[r]}">${inner}${mark}</div>`;
+    });
+  });
+
+  app.innerHTML = `
+    <header class="top">
+      <div><p class="part">Part ${state.pageIdx + 1} of 2</p><h1>${d.title}</h1></div>
+      <p class="student">Drag each card into the right box, fill the whole chart, then check your answers.</p>
+    </header>
+    <div class="layout">
+      <div class="board-wrap"><div class="board${selected ? ' picking' : ''}" id="board">${board}</div></div>
+      <aside class="dock" aria-live="polite">${dockHTML()}</aside>
+    </div>
+    <div class="foot"><button class="btn link" data-action="restart">Start over</button></div>`;
+}
+
+function dockHTML() {
+  const p = page(), d = def();
+  const placedCount = Object.keys(p.placed).length;
+  if (p.status === 'placing') {
+    if (p.deck.length) {
+      const id = p.deck[0];
+      const pop = id !== lastDockId; lastDockId = id;
+      const n = p.deck.length;
+      const stackCls = n === 1 ? 'one' : n === 2 ? 'two' : '';
+      return `
+        <h2>Place this card</h2>
+        <p class="count">${n} card${n === 1 ? '' : 's'} left in the stack</p>
+        <div class="stack ${stackCls}">${cardHTML(id, { pop })}</div>
+        <p class="hint">Drag the card into the chart, or tap it and then tap a box. Use × on a placed card to send it back.</p>
+        <div class="dock-actions">
+          ${n > 1 ? '<button class="btn quiet" data-action="skip">Skip for now</button>' : ''}
+          <button class="btn" disabled>Check answers (${placedCount}/${TOTAL})</button>
+        </div>`;
+    }
+    lastDockId = null;
+    return `
+      <h2>Every box is filled</h2>
+      <p class="note">You can still move cards before you check. Once you check, your first score is recorded.</p>
+      <button class="btn" data-action="check">Check answers</button>`;
+  }
+  const score = Object.keys(p.locked).length;
+  if (p.status === 'checked') {
+    return `
+      <h2>Not quite yet</h2>
+      <p class="score">${score} / ${TOTAL}</p>
+      <p class="note">Green cards are locked in. Cards marked in red are in the wrong box.</p>
+      <button class="btn" data-action="retry">Try the red cards again</button>`;
+  }
+  const last = state.pageIdx === PAGES.length - 1;
+  return `
+    <h2>Chart complete</h2>
+    <p class="score">${TOTAL} / ${TOTAL}</p>
+    <p class="note">First try: ${p.firstScore} of ${TOTAL} correct.</p>
+    <button class="btn" data-action="next">${last ? 'See my results' : 'Continue to ' + PAGES[state.pageIdx + 1].title}</button>`;
+}
+
+function renderResults() {
+  const date = state.finishedAt ? new Date(state.finishedAt).toLocaleString() : '';
+  const rows = PAGES.map((d, i) => {
+    const p = state.pages[i];
+    return `<tr><td>${d.title}</td><td class="num">${p.firstScore} / ${TOTAL}</td><td class="num">${p.checks}</td></tr>`;
+  }).join('');
+  app.innerHTML = `
+    <section class="panel">
+      <h1>Assignment complete</h1>
+      <p>You finished both charts${date ? ' on ' + esc(date) : ''}.</p>
+      <table class="results-table">
+        <thead><tr><th>Part</th><th>First-try score</th><th>Times checked</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <p>Take a screenshot or print this page to turn in, if your teacher asks.</p>
+      <div class="row-btns">
+        <button class="btn" data-action="print">Print results</button>
+        <button class="btn quiet" data-action="restart">Start over</button>
+      </div>
+    </section>`;
+}
+
+/* ---------- Actions ---------- */
+function place(id, key) {
+  const p = page();
+  if (p.status !== 'placing' || p.locked[key]) return;
+  const from = findCell(p, id);
+  const occupant = p.placed[key];
+  if (occupant === id) return;
+  if (from) {
+    if (occupant) p.placed[from] = occupant; else delete p.placed[from];
+  } else {
+    p.deck = p.deck.filter(x => x !== id);
+    if (occupant) p.deck.push(occupant);
+  }
+  p.placed[key] = id;
+  selected = null;
+  render();
+}
+
+function sendBack(id) {
+  const p = page();
+  const from = findCell(p, id);
+  if (!from || p.locked[from]) return;
+  delete p.placed[from];
+  p.deck.push(id);
+  selected = null;
+  render();
+}
+
+function check() {
+  const p = page();
+  if (Object.keys(p.placed).length < TOTAL) return;
+  p.wrong = [];
+  Object.entries(p.placed).forEach(([key, id]) => {
+    if (key === id) p.locked[key] = true; else p.wrong.push(key);
+  });
+  p.checks++;
+  if (p.firstScore === null) p.firstScore = TOTAL - p.wrong.length;
+  p.status = p.wrong.length ? 'checked' : 'done';
+  render();
+}
+
+function retry() {
+  const p = page();
+  p.wrong.forEach(key => { p.deck.push(p.placed[key]); delete p.placed[key]; });
+  p.deck = shuffle(p.deck);
+  p.wrong = [];
+  p.status = 'placing';
+  render();
+}
+
+function next() {
+  if (state.pageIdx < PAGES.length - 1) { state.pageIdx++; selected = null; lastDockId = null; }
+  else { state.screen = 'results'; state.finishedAt = Date.now(); }
+  render();
+  window.scrollTo(0, 0);
+}
+
+function toggleSelect(id) {
+  selected = selected === id ? null : id;
+  render();
+  const el = app.querySelector(`.card[data-card="${id}"]`);
+  if (el) el.focus({ preventScroll: true });
+}
+
+function cardIsDraggable(el) {
+  return page().status === 'placing' && !el.classList.contains('locked');
+}
+
+/* ---------- Clicks and keys ---------- */
+app.addEventListener('click', e => {
+  const btn = e.target.closest('[data-action]');
+  if (btn) {
+    const a = btn.dataset.action;
+    if (a === 'skip') { const p = page(); p.deck.push(p.deck.shift()); selected = null; render(); }
+    else if (a === 'check') check();
+    else if (a === 'retry') retry();
+    else if (a === 'next') next();
+    else if (a === 'return') sendBack(btn.dataset.card);
+    else if (a === 'print') window.print();
+    else if (a === 'restart') {
+      if (confirm('Start over? Your progress on both charts will be erased.')) {
+        state = freshState(); selected = null; lastDockId = null; render();
+      }
+    }
+    return;
+  }
+  if (e.target.closest('.card')) return; // taps on cards are handled by pointer events
+  const cell = e.target.closest('.cell');
+  if (cell && selected) place(selected, cell.dataset.cell);
+});
+
+app.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  if (e.target.closest('button')) return;
+  const card = e.target.closest('.card[data-card]');
+  if (card && cardIsDraggable(card)) {
+    e.preventDefault();
+    const cell = card.closest('.cell');
+    if (selected && selected !== card.dataset.card && cell) place(selected, cell.dataset.cell);
+    else toggleSelect(card.dataset.card);
+    return;
+  }
+  const cell = e.target.closest('.cell');
+  if (cell && selected) { e.preventDefault(); place(selected, cell.dataset.cell); }
+});
+
+/* ---------- Drag with pointer events (mouse, touch, pen) ---------- */
+app.addEventListener('pointerdown', e => {
+  if (e.button !== 0 || e.target.closest('.return')) return;
+  const el = e.target.closest('.card[data-card]');
+  if (!el || !cardIsDraggable(el)) return;
+  const r = el.getBoundingClientRect();
+  drag = { id: el.dataset.card, el, x0: e.clientX, y0: e.clientY, px: e.clientX, py: e.clientY,
+           offX: e.clientX - r.left, offY: e.clientY - r.top, w: r.width, moved: false, ghost: null, target: null, raf: 0 };
+  el.setPointerCapture(e.pointerId);
+});
+
+window.addEventListener('pointermove', e => {
+  if (!drag) return;
+  drag.px = e.clientX; drag.py = e.clientY;
+  if (!drag.moved) {
+    if (Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) < 6) return;
+    drag.moved = true;
+    const g = drag.el.cloneNode(true);
+    g.classList.remove('pop', 'selected');
+    g.classList.add('ghost');
+    g.querySelector('.return')?.remove();
+    g.style.width = drag.w + 'px';
+    document.body.appendChild(g);
+    drag.ghost = g;
+    drag.el.classList.add('lifted');
+    document.getElementById('board')?.classList.add('picking');
+    drag.raf = requestAnimationFrame(autoScroll);
+  }
+  moveGhost();
+  updateTarget();
+});
+
+function moveGhost() {
+  drag.ghost.style.transform = `translate(${drag.px - drag.offX}px, ${drag.py - drag.offY}px) rotate(2deg)`;
+}
+
+function updateTarget() {
+  const under = document.elementFromPoint(drag.px, drag.py);
+  let cell = under ? under.closest('.cell') : null;
+  if (cell && cell.classList.contains('locked')) cell = null;
+  if (cell !== drag.target) {
+    drag.target?.classList.remove('over');
+    cell?.classList.add('over');
+    drag.target = cell;
+  }
+}
+
+function autoScroll() {
+  if (!drag || !drag.moved) return;
+  const edge = 70;
+  let dy = 0;
+  if (drag.py < edge) dy = -(edge - drag.py) / 4;
+  else if (drag.py > innerHeight - edge) dy = (drag.py - (innerHeight - edge)) / 4;
+  if (dy) window.scrollBy(0, dy);
+  const wrap = app.querySelector('.board-wrap');
+  if (wrap && wrap.scrollWidth > wrap.clientWidth) {
+    const b = wrap.getBoundingClientRect();
+    if (drag.px < b.left + 40) wrap.scrollLeft -= 10;
+    else if (drag.px > b.right - 40) wrap.scrollLeft += 10;
+  }
+  updateTarget();
+  drag.raf = requestAnimationFrame(autoScroll);
+}
+
+function endDrag(e, cancelled) {
+  if (!drag) return;
+  const d = drag; drag = null;
+  cancelAnimationFrame(d.raf);
+  if (d.moved) {
+    d.ghost.remove();
+    d.el.classList.remove('lifted');
+    d.target?.classList.remove('over');
+    if (!cancelled && d.target) place(d.id, d.target.dataset.cell);
+    else render();
+  } else if (!cancelled) {
+    const cell = d.el.closest('.cell');
+    if (selected && selected !== d.id && cell) place(selected, cell.dataset.cell);
+    else toggleSelect(d.id);
+  }
+}
+window.addEventListener('pointerup', e => endDrag(e, false));
+window.addEventListener('pointercancel', e => endDrag(e, true));
+
+state = load();
+render();
+</script>
+</body>
+</html>
