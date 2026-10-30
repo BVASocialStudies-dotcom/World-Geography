@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Language Vocabulary – World Geography</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#FBF3F2; --panel:#FFFFFF; --ink:#2A1515; --muted:#6B4C4A; --line:#F0D3D0;
+  --red:#B3261E; --red-deep:#7F1D17; --red-soft:#FCE4E1; --on-red:#FFFFFF;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#1A1212; --panel:#251A1A; --ink:#F5E9E8; --muted:#C9AEAB; --line:#43302F;
+    --red:#F0675C; --red-deep:#8F241D; --red-soft:#3A1F1D; --on-red:#FFFFFF;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#1A1212; --panel:#251A1A; --ink:#F5E9E8; --muted:#C9AEAB; --line:#43302F;
+  --red:#F0675C; --red-deep:#8F241D; --red-soft:#3A1F1D; --on-red:#FFFFFF;
+}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:1.0625rem/1.6 "Atkinson Hyperlegible",system-ui,sans-serif}
+header{background:var(--red-deep);color:var(--on-red);padding:2.75rem 1.25rem 2.5rem}
+.inner{max-width:1080px;margin:0 auto}
+.eyebrow{margin:0 0 .4rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.85rem;opacity:.85}
+h1{font:800 clamp(2.4rem,6.5vw,4rem)/1 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.02em;margin:0 0 .75rem}
+header p.lede{margin:0;max-width:40rem;opacity:.92}
+main{padding:2.25rem 1.25rem 4rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,22rem),1fr));gap:1.1rem;margin:0;padding:0;list-style:none}
+.card{background:var(--panel);border:1px solid var(--line);border-left:.45rem solid var(--red);border-radius:.5rem;padding:1.2rem 1.25rem 1.3rem;display:flex;flex-direction:column}
+.num{font:800 .85rem/1 "Bricolage Grotesque",system-ui,sans-serif;color:var(--red);letter-spacing:.06em;margin-bottom:.45rem}
+h2{font:800 1.55rem/1.15 "Bricolage Grotesque",system-ui,sans-serif;margin:0 0 .5rem;color:var(--red)}
+.def{margin:0}
+.ex{margin:.9rem 0 0;padding:.65rem .8rem;background:var(--red-soft);border-radius:.35rem;font-size:.97rem}
+.ex b{color:var(--red)}
+</style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <p class="eyebrow">World Geography · Vocabulary</p>
+    <h1>Language</h1>
+    <p class="lede">Key terms for understanding how languages form, change, and spread between cultures.</p>
+  </div>
+</header>
+<main>
+  <div class="inner">
+    <ol class="grid" id="terms"></ol>
+  </div>
+</main>
+<script>
+const TERMS = [
+  ["Language Family", "A group of languages that developed from a common ancestor language.", "The Romance languages, including Spanish, French, Italian, Portuguese, and Romanian, all developed from Latin, the language of the ancient Romans."],
+  ["Dialect", "A regional or social form of a language with its own vocabulary, grammar, and pronunciation.", "Southern American English is a dialect of English."],
+  ["Vernacular", "The everyday language that ordinary people speak, as opposed to formal or written language.", "Saying “gonna” in conversation but writing “going to” in an essay."],
+  ["Code-Switching", "Shifting between languages or dialects depending on the setting or the audience.", "Speaking one way with friends and another way in a job interview."],
+  ["Lingua Franca", "A common language used for communication between people who speak different native languages.", "English is the lingua franca of international business."],
+  ["Slang", "Informal words and phrases created by a particular group or generation that change quickly over time.", "Jazz musicians in the 1920s, Valley Girls in the 1980s, and Gen Z today each created their own slang."],
+  ["Pidgin", "A simplified language that forms when groups with no shared language need to communicate, often for trade. It has no native speakers.", "Naija, also called Nigerian Pidgin, mixes English with words from local languages such as Yoruba and Igbo so that people from Nigeria’s hundreds of language groups can talk to each other."],
+  ["Creole", "A pidgin that has become the native language of a community, with full grammar and vocabulary.", "Jamaican Patois grew out of English and West African languages spoken on Jamaica’s plantations and became the native language that most Jamaicans speak today."]
+];
+const list = document.getElementById('terms');
+TERMS.forEach(([term, def, ex], i) => {
+  const li = document.createElement('li'); li.className = 'card';
+  const n = document.createElement('div'); n.className = 'num'; n.textContent = String(i + 1).padStart(2, '0');
+  const h = document.createElement('h2'); h.textContent = term;
+  const d = document.createElement('p'); d.className = 'def'; d.textContent = def;
+  const e = document.createElement('p'); e.className = 'ex';
+  const b = document.createElement('b'); b.textContent = 'Example: ';
+  e.append(b, ex);
+  li.append(n, h, d, e); list.append(li);
+});
+</script>
+</body>
+</html>
