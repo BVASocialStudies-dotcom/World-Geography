@@ -112,7 +112,20 @@ textarea{font-family:var(--mono);font-size:.88rem;line-height:1.5;min-height:280
   var KEY = 'world-geography-page:v1';
   try { state = JSON.parse(document.getElementById('state').textContent); } catch(e){ state = {units:[]}; }
   var hasDraft = false;
-  try { var d = localStorage.getItem(KEY); if (d) { state = JSON.parse(d); hasDraft = true; } } catch(e){}
+  try { var d = localStorage.getItem(KEY); if (d) {
+    var draft = JSON.parse(d), pub = state;
+    // Keep links published after the draft was saved: fill empty draft spots from the published page.
+    (pub.units||[]).forEach(function(pu,i){
+      if(!draft.units[i]) { draft.units[i] = pu; return; }
+      (pu.slots||[]).forEach(function(ps,j){
+        var ds = draft.units[i].slots[j];
+        var dsEmpty = !ds || !((ds.html && ds.html.trim()) || (ds.url && ds.url.trim()));
+        var psFilled = ps && ((ps.html && ps.html.trim()) || (ps.url && ps.url.trim()));
+        if(dsEmpty && psFilled) draft.units[i].slots[j] = ps;
+      });
+    });
+    state = draft; hasDraft = true;
+  } } catch(e){}
   var canEdit = /(^|[?&#])edit\b/.test(location.search + location.hash);
 
   function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
