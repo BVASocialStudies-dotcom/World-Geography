@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>International Relations | Key Terms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --hero-bg: #12301f;
+    --hill-back: #1b4a2f;
+    --hill-mid: #25603e;
+    --hill-front: #357a50;
+    --silhouette: #0c2215;
+    --globe-fill: #1a4129;
+    --globe-line: #5f9c74;
+    --path: #a9dcb8;
+    --hero-text: #eef6f0;
+    --hero-sub: #cfe3d5;
+    --page-bg: #e8f0ea;
+    --card-bg: #f8fbf8;
+    --card-head: #2d6844;
+    --card-head-text: #f4faf5;
+    --card-border: #c4d8ca;
+    --body-text: #1d2b22;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--page-bg);
+    color: var(--body-text);
+    font-family: "Source Sans 3", "Source Sans Pro", "Segoe UI", Arial, sans-serif;
+    font-size: 1.15rem;
+    line-height: 1.6;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-text);
+    overflow: hidden;
+  }
+
+  .hero-text {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2.5rem 2.5rem 0;
+  }
+
+  .hero h1 {
+    font-family: "Zilla Slab", Rockwell, Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1.02;
+    margin: 0 0 1.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  .hero p {
+    color: var(--hero-sub);
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    line-height: 1.7;
+    max-width: 40em;
+    margin: 0;
+  }
+
+  .horizon {
+    position: relative;
+    height: 240px;
+    margin-top: 1.5rem;
+  }
+
+  .horizon svg { position: absolute; display: block; }
+
+  .globe {
+    left: 50%;
+    bottom: -150px;
+    width: 340px;
+    height: 340px;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  .hills, .route {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .hills { z-index: 2; }
+  .route { z-index: 3; }
+
+  .building-left, .building-right {
+    bottom: 0;
+    height: 130px;
+    z-index: 4;
+  }
+  .building-left { left: 2%; width: 190px; }
+  .building-right { right: 2%; width: 190px; }
+
+  /* ---------- Cards ---------- */
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 2.5rem 4rem;
+  }
+
+  .terms {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2.25rem;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .card h2 {
+    background: var(--card-head);
+    color: var(--card-head-text);
+    font-family: "Zilla Slab", Rockwell, Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+    line-height: 1.2;
+    margin: 0;
+    padding: 1.25rem 1.75rem;
+  }
+
+  .card p {
+    margin: 0;
+    padding: 1.5rem 1.75rem 1.75rem;
+  }
+
+  @media (max-width: 640px) {
+    .hero-text { padding: 2rem 1.25rem 0; }
+    main { padding: 2rem 1.25rem 3rem; }
+    .terms { grid-template-columns: 1fr; gap: 1.5rem; }
+    .horizon { height: 180px; }
+    .globe { width: 240px; height: 240px; bottom: -110px; }
+    .building-left, .building-right { width: 120px; height: 84px; }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page-bg: #0f1d14;
+      --card-bg: #172a1e;
+      --card-border: #2c4a36;
+      --body-text: #e1ece4;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-text">
+    <h1>International Relations</h1>
+    <p>International relations is the study of how countries and other groups interact around the world. Learn these terms, from who holds power to the ways countries cooperate, compete, and connect.</p>
+  </div>
+
+  <div class="horizon" aria-hidden="true">
+    <!-- Globe rising behind the hills -->
+    <svg class="globe" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="96" fill="var(--globe-fill)" stroke="var(--globe-line)" stroke-width="2"/>
+      <g fill="none" stroke="var(--globe-line)" stroke-width="1.4" opacity="0.8">
+        <ellipse cx="100" cy="100" rx="30" ry="96"/>
+        <ellipse cx="100" cy="100" rx="64" ry="96"/>
+        <line x1="100" y1="4" x2="100" y2="196"/>
+        <line x1="4" y1="100" x2="196" y2="100"/>
+        <path d="M18 55 Q100 72 182 55"/>
+        <path d="M18 145 Q100 128 182 145"/>
+        <path d="M44 24 Q100 36 156 24"/>
+      </g>
+    </svg>
+
+    <!-- Rolling hills (stretch to full width) -->
+    <svg class="hills" viewBox="0 0 1440 240" preserveAspectRatio="none">
+      <path d="M0 120 L140 92 L420 140 L760 96 L1040 136 L1260 104 L1440 118 L1440 240 L0 240 Z" fill="var(--hill-back)"/>
+      <path d="M0 160 L240 132 L600 170 L900 140 L1180 176 L1440 150 L1440 240 L0 240 Z" fill="var(--hill-mid)"/>
+      <path d="M0 196 L320 176 L700 206 L1060 184 L1440 202 L1440 240 L0 240 Z" fill="var(--hill-front)"/>
+    </svg>
+
+    <!-- Dashed path connecting the two capitals -->
+    <svg class="route" viewBox="0 0 1440 240" preserveAspectRatio="none">
+      <path d="M120 128 C 420 10, 1020 10, 1320 128" fill="none" stroke="var(--path)" stroke-width="3" stroke-dasharray="14 10" vector-effect="non-scaling-stroke"/>
+    </svg>
+
+    <!-- Left: domed capitol -->
+    <svg class="building-left" viewBox="0 0 190 130" preserveAspectRatio="xMinYMax meet">
+      <g fill="var(--silhouette)">
+        <rect x="20" y="90" width="150" height="40"/>
+        <rect x="40" y="70" width="110" height="22"/>
+        <rect x="66" y="56" width="58" height="16"/>
+        <path d="M68 58 Q95 10 122 58 Z"/>
+        <rect x="92" y="14" width="6" height="14"/>
+        <circle cx="95" cy="12" r="4"/>
+      </g>
+      <g fill="var(--hill-front)">
+        <rect x="48" y="98" width="8" height="32"/>
+        <rect x="68" y="98" width="8" height="32"/>
+        <rect x="88" y="98" width="14" height="32"/>
+        <rect x="114" y="98" width="8" height="32"/>
+        <rect x="134" y="98" width="8" height="32"/>
+      </g>
+    </svg>
+
+    <!-- Right: columned hall with flag -->
+    <svg class="building-right" viewBox="0 0 190 130" preserveAspectRatio="xMaxYMax meet">
+      <g fill="var(--silhouette)">
+        <rect x="154" y="10" width="4" height="120"/>
+        <path d="M158 12 L184 18 L158 26 Z"/>
+        <path d="M20 64 L85 36 L150 64 Z"/>
+        <rect x="20" y="64" width="130" height="10"/>
+        <rect x="14" y="118" width="142" height="12"/>
+        <rect x="28" y="74" width="12" height="44"/>
+        <rect x="52" y="74" width="12" height="44"/>
+        <rect x="76" y="74" width="12" height="44"/>
+        <rect x="100" y="74" width="12" height="44"/>
+        <rect x="124" y="74" width="12" height="44"/>
+      </g>
+    </svg>
+  </div>
+</header>
+
+<main>
+  <section class="terms">
+    <article class="card">
+      <h2>Sovereignty</h2>
+      <p>A country’s full authority to govern itself and control what happens inside its borders. No outside country or group has the right to interfere in its affairs.</p>
+    </article>
+
+    <article class="card">
+      <h2>Nation-State</h2>
+      <p>A country whose borders closely match a nation, which is a group of people who share a common culture, language, or history. Japan and Iceland are common examples.</p>
+    </article>
+
+    <article class="card">
+      <h2>Intergovernmental Organizations (IGOs)</h2>
+      <p>Groups made up of member countries that work together on shared goals like trade, security, or health. Examples include the United Nations, NATO, and the European Union.</p>
+    </article>
+
+    <article class="card">
+      <h2>Non-Governmental Organization (NGO)</h2>
+      <p>A nonprofit group that works independently of any government to address issues like human rights, poverty, or the environment. Examples include Amnesty International and Doctors Without Borders.</p>
+    </article>
+
+    <article class="card">
+      <h2>Diplomacy</h2>
+      <p>The practice of countries managing their relationships through talks, negotiation, and agreements instead of force. Diplomats and ambassadors represent their countries in these discussions.</p>
+    </article>
+
+    <article class="card">
+      <h2>Alliances</h2>
+      <p>Formal agreements between countries to support each other, often by promising military help if one member is attacked. NATO is one of the best-known alliances in the world.</p>
+    </article>
+
+    <article class="card">
+      <h2>Liberalism</h2>
+      <p>A theory that says countries can cooperate and build peace through trade, democracy, and international organizations. It focuses on shared interests rather than competition.</p>
+    </article>
+
+    <article class="card">
+      <h2>Realism</h2>
+      <p>A theory that says countries act mainly in their own self-interest and compete for power and security. Realists believe power, especially military power, matters most in world affairs.</p>
+    </article>
+
+    <article class="card">
+      <h2>Proxy Wars</h2>
+      <p>Conflicts in which powerful countries support opposing sides with weapons, money, or training instead of fighting each other directly. Many Cold War conflicts, such as the Soviet-Afghan War, were proxy wars.</p>
+    </article>
+
+    <article class="card">
+      <h2>Hard Power</h2>
+      <p>Using force or pressure, such as military action or economic sanctions, to make other countries do what you want. It is power based on threats and rewards.</p>
+    </article>
+
+    <article class="card">
+      <h2>Soft Power</h2>
+      <p>Influencing other countries through attraction, such as culture, values, and ideas, rather than force. Movies, music, and student exchange programs can all be sources of soft power.</p>
+    </article>
+
+    <article class="card">
+      <h2>Non-State Actors</h2>
+      <p>Groups or individuals that influence world affairs but are not the government of a country. Examples include multinational corporations, NGOs, and terrorist groups.</p>
+    </article>
+
+    <article class="card">
+      <h2>State Actors</h2>
+      <p>The governments of countries that take part in international relations. They can sign treaties, declare war, and join international organizations.</p>
+    </article>
+
+    <article class="card">
+      <h2>Globalization</h2>
+      <p>The process of countries becoming more connected through trade, technology, communication, and culture. Because of it, events in one part of the world can quickly affect people everywhere.</p>
+    </article>
+  </section>
+</main>
+
+</body>
+</html>
